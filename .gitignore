@@ -1,0 +1,24 @@
+# Python cache (system-generated, should not be tracked)
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+
+# OS files (system-generated)
+.DS_Store
+Thumbs.db
+.DS_Store?
+
+# IDE files (optional, user-specific)
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Virtual environments (if used)
+venv/
+env/
+ENV/
+.venv/
+
