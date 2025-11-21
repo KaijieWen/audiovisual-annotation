@@ -22,3 +22,9 @@ env/
 ENV/
 .venv/
 
+# Large files exceeding GitHub's 100MB limit
+yolov8x.pt
+inputs/input_video.mp4
+outputs/detections/annotated_output_small.mp4
+outputs/detections/annotated_output_xlarge.mp4
+
