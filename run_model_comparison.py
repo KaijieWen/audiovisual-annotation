@@ -46,7 +46,7 @@ def run_with_model(model_name, model_size):
 def main():
     """Run pipeline with transcription, then both YOLO models."""
     print("=" * 70)
-    print("Multi-Modal Perception Pipeline - Model Comparison")
+    print("Audiovisual Annotation Pipeline - Model Comparison")
     print("=" * 70)
     print()
     

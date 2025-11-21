@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Main Orchestrator Script for Multi-Modal Perception Pipeline.
+Main Orchestrator Script for Audiovisual Annotation Pipeline.
 Runs transcription, object detection, and CVAT export sequentially.
 """
 
@@ -18,7 +18,7 @@ from export_for_cvat import main as export_cvat_main
 def main():
     """Run the complete pipeline: transcription → detection → CVAT export."""
     print("=" * 60)
-    print("Multi-Modal Perception Pipeline")
+    print("Audiovisual Annotation Pipeline")
     print("=" * 60)
     print()
     

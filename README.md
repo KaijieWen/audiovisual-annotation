@@ -12,7 +12,7 @@ This pipeline processes raw video and audio files to:
 ## Directory Structure
 
 ```
-multimodal-pipeline/
+audiovisual-annotation/
 ├── inputs/              # Place your raw video and audio files here
 ├── outputs/
 │   ├── transcripts/    # CSV outputs from Whisper
@@ -39,7 +39,7 @@ multimodal-pipeline/
 
 1. Navigate to the pipeline directory:
    ```bash
-   cd multimodal-pipeline
+   cd audiovisual-annotation
    ```
 
 2. Install required dependencies:
