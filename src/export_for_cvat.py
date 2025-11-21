@@ -127,7 +127,10 @@ def export_to_yolo_format(detections_csv_path, video_path, output_dir,
     print("Converting detections to YOLO format...")
     for frame_number, frame_detections in grouped:
         # Create frame text file
-        frame_file = obj_train_data_dir / f"frame_{frame_number:06d}.txt"
+        # CVAT uses 0-based indexing for video frames (frame 0, 1, 2, ...)
+        # Our CSV uses 1-based indexing (frame 1, 2, 3, ...), so subtract 1
+        cvat_frame_number = frame_number - 1
+        frame_file = obj_train_data_dir / f"{cvat_frame_number}.txt"
         
         with open(frame_file, 'w') as f:
             for _, detection in frame_detections.iterrows():
@@ -149,13 +152,36 @@ def export_to_yolo_format(detections_csv_path, video_path, output_dir,
     
     print(f"Created {len(grouped)} frame annotation files in {obj_train_data_dir}")
     
+    # Create obj.data file (required by CVAT)
+    num_classes = len(unique_classes)
+    data_file = output_dir / "obj.data"
+    with open(data_file, 'w') as f:
+        f.write(f"classes = {num_classes}\n")
+        f.write(f"names = obj.names\n")
+        f.write(f"train = train.txt\n")
+    print(f"Created obj.data file: {data_file}")
+    
+    # Create train.txt file listing all frame paths (required by CVAT)
+    # CVAT matches by frame number for video tasks, using 0-based indexing
+    train_txt_file = output_dir / "train.txt"
+    frame_numbers = sorted(df['frame_number'].unique())
+    with open(train_txt_file, 'w') as f:
+        for frame_number in frame_numbers:
+            # CVAT expects format: obj_train_data/<number>.jpg for video tasks
+            # CVAT uses 0-based indexing, so subtract 1 from frame_number
+            cvat_frame_number = frame_number - 1
+            f.write(f"obj_train_data/{cvat_frame_number}.jpg\n")
+    print(f"Created train.txt file: {train_txt_file} ({len(frame_numbers)} frames)")
+    
     # Create zip file for easy CVAT upload
     zip_path = output_dir / "cvat_annotations.zip"
     print(f"Creating zip file: {zip_path}")
     
     with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
-        # Add obj.names
+        # Add required files
+        zipf.write(data_file, data_file.name)
         zipf.write(names_file, names_file.name)
+        zipf.write(train_txt_file, train_txt_file.name)
         
         # Add all frame annotation files
         for frame_file in sorted(obj_train_data_dir.glob("*.txt")):
